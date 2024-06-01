@@ -3,13 +3,16 @@ package com.openpay.consumer_openpay.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.openpay.consumer_openpay.model.BitacoraDto;
 import com.openpay.consumer_openpay.model.CharacterDto;
+import com.openpay.consumer_openpay.service.ConsultaService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,40 +25,37 @@ public class ConsultasController {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(ConsultasController.class);
 	private final String URL_ORIG_ANGULAR="http://localhost:4200";
-	   
-	//Servicio consulta Lista Clientes
+
+	@Autowired
+	private ConsultaService consultaService;
+	
 	@CrossOrigin(origins = URL_ORIG_ANGULAR)
 	@GetMapping("/characters")
 	public ResponseEntity <List<CharacterDto>> characters() {
 		
-		LOG.info("Consume service get All characters");
-
-		List<CharacterDto> lista = new ArrayList<>();
+		LOG.info("Consume service v1/public/characters All characters");
+		List<CharacterDto> res = consultaService.getAllCharacters();
 		
-		CharacterDto val = new CharacterDto();
-		val.setId(1);
-		val.setValor("A");
-		lista.add(val);
-		
-		val = new CharacterDto();
-		val.setId(2);
-		val.setValor("B");
-		lista.add(val);
-
-		val = new CharacterDto();
-		val.setId(3);
-		val.setValor("*");
-		lista.add(val);
-		
-		return ResponseEntity.ok(lista);
+		return ResponseEntity.ok(res);
 	}
 	
 	@GetMapping("/characters/{id}")
-	public ResponseEntity<String> getMethodName(@PathVariable int id) {
+	public ResponseEntity<CharacterDto> getMethodName(@PathVariable int id) {
 
-		LOG.info("Consume service get characters for Id");
-		return ResponseEntity.ok(new String("Service 2 Cliente ID:"+ id));
+		LOG.info("Consume service v1/public/characters/{id} ONE character");
+		CharacterDto res = consultaService.getCharacterByID(id);
+		
+		return ResponseEntity.ok(res);
 	}
 	
+	
+	@GetMapping("/dataBitacora")
+	public ResponseEntity <List<BitacoraDto>> getAllBitacora() {
+		
+		LOG.info("Consume service v1/public/characters All characters");
+		List<BitacoraDto> res = consultaService.getAllBitacora();
+		
+		return ResponseEntity.ok(res);
+	}
 
 }
