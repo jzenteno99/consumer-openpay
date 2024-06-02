@@ -38,7 +38,8 @@ public class ConsultasController {
 		
 		return ResponseEntity.ok(res);
 	}
-	
+
+	@CrossOrigin(origins = URL_ORIG_ANGULAR)
 	@GetMapping("/characters/{id}")
 	public ResponseEntity<CharacterDto> getMethodName(@PathVariable int id) {
 
@@ -48,7 +49,7 @@ public class ConsultasController {
 		return ResponseEntity.ok(res);
 	}
 	
-	
+	@CrossOrigin(origins = URL_ORIG_ANGULAR)
 	@GetMapping("/dataBitacora")
 	public ResponseEntity <List<BitacoraDto>> getAllBitacora() {
 		
